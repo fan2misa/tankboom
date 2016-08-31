@@ -16,6 +16,8 @@ namespace app.Scene.InGame {
         private tracer: app.Util.Tracer;
         
         private hitter: app.Util.Hitter;
+        
+        private respawner: app.Util.Respawner;
                 
         private tankGroup: Phaser.Group;
         
@@ -56,7 +58,8 @@ namespace app.Scene.InGame {
                 me.tank = new app.Gaming.Tank(app.User.getId(), app.User.getTeam(), new src.Map.Point(app.User.getPosition()));
                 me.tank.setHealth(app.User.getHealt());
                 me.addTankToGroup(me.tank);
-                me.lifeContainer.setTank(me.tank);     
+                me.lifeContainer.setTank(me.tank);
+                me.respawner.play(me.tank.getPosition());
             });
             
             app.Socket.onTankRespawned((user) => {
@@ -83,10 +86,13 @@ namespace app.Scene.InGame {
             this.hitter = new app.Util.Hitter();
             
             this.tankGroup = src.Game.get().add.group();
+            
+            this.respawner = new app.Util.Respawner();
 
             this.tank = new app.Gaming.Tank(app.User.getId(), app.User.getTeam(), new src.Map.Point(app.User.getPosition()));
             this.tank.setHealth(app.User.getHealt());
             this.addTankToGroup(this.tank);
+            this.respawner.play(this.tank.getPosition());
 
             for (var i in app.Server.getUsers()) {
                 if (app.Server.getUsers()[i].id !== app.User.getId()) {
