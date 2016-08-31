@@ -1,0 +1,20 @@
+{
+  "name": "typescript",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Gwennael Jean <gwennael.jean@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "*"
+  }
+}

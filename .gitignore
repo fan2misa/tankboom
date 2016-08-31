@@ -1,0 +1,4 @@
+/nbproject/
+/node_modules/
+/web/vendor/
+tsconfig.json
