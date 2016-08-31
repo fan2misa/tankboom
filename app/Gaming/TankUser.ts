@@ -8,6 +8,8 @@ namespace app.Gaming {
             
             src.Game.get().load.spritesheet('tank-hit', 'img/tank/hit.png', 80, 80, 9);
             
+            src.Game.get().load.spritesheet('tank-respawn', 'img/tank/respawn.png', 80, 80, 9);
+            
             src.Game.get().load.image('tank-trace', 'img/tank/trace.png');
             src.Game.get().load.image('tank-shadow', 'img/tank/shadow.png');
             

@@ -11,12 +11,15 @@ namespace app.Scene.MainMenu {
         
         private infoText: Phaser.Text;
         
+        private logo: Phaser.Sprite;
+        
         public constructor() {
             super();
             this.buttonsGame = new Array();
         }
         
         public static preload(): void {
+            src.Game.get().load.image('logo', 'img/logo.png');
             app.Scene.MainMenu.Button.ButtonReady.preload();
             app.Scene.MainMenu.Button.GameType.ButtonDeadmatch.preload();
             app.Scene.MainMenu.Button.GameType.ButtonDeadmatchTeam2.preload();
@@ -47,6 +50,9 @@ namespace app.Scene.MainMenu {
         }
         
         public start(): void {
+            this.logo = src.Game.get().add.sprite(src.Game.get().world.centerX - 125, src.Game.get().world.centerY, 'logo');
+            this.logo.anchor.set(0.5, 0.5);
+            
             src.Game.get().world.setBounds(0, 0, src.Parameter.get('sceneWidth'), src.Parameter.get('sceneHeight'));
             
             this.generateButtonsGameType();

@@ -631,6 +631,7 @@ var app;
             Tank.preload = function () {
                 src.Game.get().load.spritesheet('tank-explosion', 'img/explosion/tank.png', 64, 64, 23);
                 src.Game.get().load.spritesheet('tank-hit', 'img/tank/hit.png', 80, 80, 9);
+                src.Game.get().load.spritesheet('tank-respawn', 'img/tank/respawn.png', 80, 80, 9);
                 src.Game.get().load.image('tank-trace', 'img/tank/trace.png');
                 src.Game.get().load.image('tank-shadow', 'img/tank/shadow.png');
                 src.Game.get().load.image('tank-default', 'img/tank/default/tank.png');
@@ -721,6 +722,7 @@ var app;
                         me.tank.setHealth(app.User.getHealt());
                         me.addTankToGroup(me.tank);
                         me.lifeContainer.setTank(me.tank);
+                        me.respawner.play(me.tank.getPosition());
                     });
                     app.Socket.onTankRespawned(function (user) {
                         me.tanks[user.id] = new app.Gaming.Tank(user.id, user.team, new src.Map.Point(user.position));
@@ -742,9 +744,11 @@ var app;
                     this.tracer = new app.Util.Tracer();
                     this.hitter = new app.Util.Hitter();
                     this.tankGroup = src.Game.get().add.group();
+                    this.respawner = new app.Util.Respawner();
                     this.tank = new app.Gaming.Tank(app.User.getId(), app.User.getTeam(), new src.Map.Point(app.User.getPosition()));
                     this.tank.setHealth(app.User.getHealt());
                     this.addTankToGroup(this.tank);
+                    this.respawner.play(this.tank.getPosition());
                     for (var i in app.Server.getUsers()) {
                         if (app.Server.getUsers()[i].id !== app.User.getId()) {
                             var user = app.Server.getUsers()[i];
@@ -1229,6 +1233,7 @@ var app;
                     this.buttonsGame = new Array();
                 }
                 MainMenuScene.preload = function () {
+                    src.Game.get().load.image('logo', 'img/logo.png');
                     app.Scene.MainMenu.Button.ButtonReady.preload();
                     app.Scene.MainMenu.Button.GameType.ButtonDeadmatch.preload();
                     app.Scene.MainMenu.Button.GameType.ButtonDeadmatchTeam2.preload();
@@ -1254,6 +1259,8 @@ var app;
                     });
                 };
                 MainMenuScene.prototype.start = function () {
+                    this.logo = src.Game.get().add.sprite(src.Game.get().world.centerX - 125, src.Game.get().world.centerY, 'logo');
+                    this.logo.anchor.set(0.5, 0.5);
                     src.Game.get().world.setBounds(0, 0, src.Parameter.get('sceneWidth'), src.Parameter.get('sceneHeight'));
                     this.generateButtonsGameType();
                     this.activeButtonGameType();
@@ -1812,6 +1819,27 @@ var app;
             return LifeContainer;
         })();
         Util.LifeContainer = LifeContainer;
+    })(Util = app.Util || (app.Util = {}));
+})(app || (app = {}));
+var app;
+(function (app) {
+    var Util;
+    (function (Util) {
+        var Respawner = (function () {
+            function Respawner() {
+                this.hitGroup = src.Game.get().add.group();
+                var explosionAnimation = this.hitGroup.create(0, 0, 'tank-respawn', 0, false);
+                explosionAnimation.anchor.setTo(0.5, 0.5);
+                explosionAnimation.animations.add('tank-respawn');
+            }
+            Respawner.prototype.play = function (position) {
+                var explosionAnimation = this.hitGroup.getFirstExists(false, true);
+                explosionAnimation.reset(position.tank.x, position.tank.y);
+                explosionAnimation.play('tank-respawn', 30, false, true);
+            };
+            return Respawner;
+        })();
+        Util.Respawner = Respawner;
     })(Util = app.Util || (app.Util = {}));
 })(app || (app = {}));
 var app;
