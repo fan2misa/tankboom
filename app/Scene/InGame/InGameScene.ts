@@ -183,7 +183,7 @@ namespace app.Scene.InGame {
         private collideTankCallback(bullet: Phaser.Bullet, tankSprite: Phaser.Sprite): void {
             bullet.kill();
             if (this.tank.getHealth() > 0) {
-                this.hitter.play(this.tank.getPosition());
+                this.hitter.play(tankSprite.x, tankSprite.y);
             }
         }
         
@@ -195,7 +195,7 @@ namespace app.Scene.InGame {
                     app.Socket.setTankTouch(tankSprite.data.id, bullet.data.hit);
 
                     if (this.tanks[tankSprite.data.id].getHealth() > 0) {
-                        this.hitter.play(this.tanks[tankSprite.data.id].getPosition());
+                        this.hitter.play(tankSprite.x, tankSprite.y);
                     }
                 }
             } else if (tankSprite.data.id === app.User.getId() && bullet.data.bounce <= 0) {
@@ -203,7 +203,7 @@ namespace app.Scene.InGame {
                 app.Socket.setTankTouch(tankSprite.data.id, bullet.data.hit);
 
                 if (this.tank.getHealth() > 0) {
-                    this.hitter.play(this.tank.getPosition());
+                    this.hitter.play(tankSprite.x, tankSprite.y);
                 }
             }
         }

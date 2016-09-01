@@ -826,7 +826,7 @@ var app;
                 InGameScene.prototype.collideTankCallback = function (bullet, tankSprite) {
                     bullet.kill();
                     if (this.tank.getHealth() > 0) {
-                        this.hitter.play(this.tank.getPosition());
+                        this.hitter.play(tankSprite.x, tankSprite.y);
                     }
                 };
                 InGameScene.prototype.overlapTankCallback = function (bullet, tankSprite) {
@@ -836,7 +836,7 @@ var app;
                             this.tanks[tankSprite.data.id].removeHealth(bullet.data.hit);
                             app.Socket.setTankTouch(tankSprite.data.id, bullet.data.hit);
                             if (this.tanks[tankSprite.data.id].getHealth() > 0) {
-                                this.hitter.play(this.tanks[tankSprite.data.id].getPosition());
+                                this.hitter.play(tankSprite.x, tankSprite.y);
                             }
                         }
                     }
@@ -844,7 +844,7 @@ var app;
                         bullet.kill();
                         app.Socket.setTankTouch(tankSprite.data.id, bullet.data.hit);
                         if (this.tank.getHealth() > 0) {
-                            this.hitter.play(this.tank.getPosition());
+                            this.hitter.play(tankSprite.x, tankSprite.y);
                         }
                     }
                 };
@@ -1750,9 +1750,9 @@ var app;
                 explosionAnimation.anchor.setTo(0.5, 0.5);
                 explosionAnimation.animations.add('tank-hit');
             }
-            Hitter.prototype.play = function (position) {
+            Hitter.prototype.play = function (x, y) {
                 var explosionAnimation = this.hitGroup.getFirstExists(false, true);
-                explosionAnimation.reset(position.tank.x, position.tank.y);
+                explosionAnimation.reset(x, y);
                 explosionAnimation.play('tank-hit', 30, false, true);
             };
             return Hitter;

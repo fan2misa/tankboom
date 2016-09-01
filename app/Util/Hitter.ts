@@ -13,9 +13,9 @@ namespace app.Util {
             explosionAnimation.animations.add('tank-hit');
         }
         
-        public play(position: any) {
+        public play(x: number, y: number) {
             var explosionAnimation = this.hitGroup.getFirstExists(false, true);
-            explosionAnimation.reset(position.tank.x, position.tank.y);
+            explosionAnimation.reset(x, y);
             explosionAnimation.play('tank-hit', 30, false, true);
         }
         
